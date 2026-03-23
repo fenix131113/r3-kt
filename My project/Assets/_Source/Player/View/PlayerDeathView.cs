@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using R3;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Player.View
     public class PlayerDeathView : MonoBehaviour
     {
         [SerializeField] private GameObject gameOverPanel;
-        
+
         private PlayerStats _stats;
         private IDisposable _healthDisposable;
 
@@ -26,11 +27,11 @@ namespace Player.View
             Expose();
         }
 
-        private void OnHealthChanged(int value)
+        private void CheckForDeath(int[] values)
         {
-            if(value != 0)
+            if (values.All(x => x != 0))
                 return;
-            
+
             Death();
         }
 
@@ -41,9 +42,10 @@ namespace Player.View
 
         private void Bind()
         {
-            _healthDisposable = _stats.HealthChanged.Subscribe(OnHealthChanged);
+            _healthDisposable = Observable.CombineLatest(_stats.HealthChanged, _stats.ManaChanged)
+                .Subscribe(CheckForDeath);
         }
-        
+
         private void Expose()
         {
             _healthDisposable?.Dispose();

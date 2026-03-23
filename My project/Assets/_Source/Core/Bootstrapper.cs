@@ -9,6 +9,9 @@ namespace Core
         [SerializeField] private HealthView healthView;
         [SerializeField] private MedkitView medkitView;
         [SerializeField] private PlayerDeathView playerDeathView;
+        [SerializeField] private SpellView spellView;
+        [SerializeField] private CoinsView coinsView;
+        [SerializeField] private ManaView manaView;
         
         private PlayerStats _stats;
 
@@ -19,6 +22,9 @@ namespace Core
             healthView.Construct(_stats);
             medkitView.Construct(_stats);
             playerDeathView.Construct(_stats);
+            spellView.Construct(_stats);
+            coinsView.Construct(_stats);
+            manaView.Construct(_stats);
         }
     }
 }
